@@ -16,10 +16,10 @@ class DragAndDrop
     State state;
     GameObject gameObject;
 
-    public DragAndDrop()
+    public DragAndDrop(GameObject gameObject = null)
     {
         state = State.none;
-        gameObject = null;
+        this.gameObject = gameObject;
     }
 
     enum State {
