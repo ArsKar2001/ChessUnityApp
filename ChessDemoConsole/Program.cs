@@ -14,6 +14,7 @@ namespace ChessDemoConsole
             Chess chess = new Chess();
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine(chess.fen);
                 Console.WriteLine(ChessWriteAscii(chess));
                 string move = Console.ReadLine();
