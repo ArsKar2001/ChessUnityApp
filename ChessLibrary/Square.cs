@@ -12,11 +12,11 @@ namespace ChessLibrary
         /// <summary>
         /// Принимает позицию фигуры по горизонтали
         /// </summary>
-        public int x { get; private set; }
+        public int X { get; private set; }
         /// <summary>
         /// Принимает позицию фигуры по вертикали
         /// </summary>
-        public int y { get; private set; }
+        public int Y { get; private set; }
         /// <summary>
         /// Объявление фигуры ненаходящейся на поле 
         /// </summary>
@@ -28,8 +28,8 @@ namespace ChessLibrary
         /// <param name="y"></param>
         public Square(int x, int y)
         {
-            this.x = x;
-            this.y = y;
+            this.X = x;
+            this.Y = y;
         }
         /// <summary>
         /// Параметрический конструктор с проверкой на присутствие фигуры на поле.
@@ -41,8 +41,8 @@ namespace ChessLibrary
                 name[0] >= 'a' && name[0] <= 'h' &&
                 name[1] >= '1' && name[1] <= '8')
             {
-                x = name[0] - 'a';
-                y = name[1] - '1';
+                Y = name[0] - 'a';
+                X = name[1] - '1';
             }
             else this = none;
         }
@@ -50,13 +50,20 @@ namespace ChessLibrary
         /// Принимает название позиции фигуры на игровом поле.
         /// Пример: (4, 1) -> e2;
         /// </summary>
-        public string Name => ((char)('a' - this.x)).ToString() +
-            (this.y + 1).ToString();
+        public string Name => (OnBoard()) ? ((char)('a' + Y)).ToString() +
+            (X + 1).ToString() : "";
 
         public bool OnBoard()
         {
-            return (this.x >= 0 && this.x < 8) &&
-                   (this.y >= 0 && this.y < 8);
+            return (this.X >= 0 && this.X < 8) &&
+                   (this.Y >= 0 && this.Y < 8);
+        }
+
+        public static IEnumerable<Square> YieldBoardMoves()
+        {
+            for (int x = 0; x < 8; x++)
+                for (int y = 0; y < 8; y++)
+                    yield return new Square(x, y);
         }
     }
 }

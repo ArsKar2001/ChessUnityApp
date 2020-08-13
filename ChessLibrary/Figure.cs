@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ChessLibrary
 {
+    /// <summary>
+    /// Представление всех фигур для шахмат, включая пустую клетку none
+    /// </summary>
     enum Figure
     {
         none,
@@ -31,29 +34,9 @@ namespace ChessLibrary
         {
             if (figure == Figure.none) return Color.none;
 
-            switch (figure)
-            {
-                case Figure.whiteKing:
-                case Figure.whiteQueen:
-                case Figure.whiteRook:
-                case Figure.whiteBishop:
-                case Figure.whiteKnight:
-                case Figure.whitePawn:
-                    return Color.white;
-                case Figure.blackKing:
-                case Figure.blackQueen:
-                case Figure.blackRook:
-                case Figure.blackBishop:
-                case Figure.blackKnight:
-                case Figure.blackPawn:
-                    return Color.black;
-                default:
-                    return Color.none;
-            }
-
-            // return
-            //    ((char)figure).ToString().ToLower() == ((char)figure).ToString() ?
-            //    Color.black : Color.white;
+            return
+                ((char)figure).ToString().ToLower() == ((char)figure).ToString() ?
+                Color.black : Color.white;
         }
     }
 }

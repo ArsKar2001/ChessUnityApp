@@ -12,9 +12,10 @@ namespace ChessLibrary
     public class Chess
     {
 
-        public string fen => board.fen;
-        BoardClass board;
-        MovesFigures moves;
+        public string Fen => board.Fen;
+
+        readonly BoardClass board;
+        readonly MovesFigures moves;
 
         /// <summary>
         /// Параметрический конструктор.
@@ -64,6 +65,17 @@ namespace ChessLibrary
             Square square = new Square(x, y);
             Figure figure = board.GetFigureOnSquare(square);
             return figure == Figure.none ? '.' : (char)figure;
+        }
+
+        public IEnumerable<string> YieldvalidMoves()
+        {
+            foreach (FigureOnSquare figureOnSquare in board.YieldFiguresOnSquare())
+                foreach (Square toItem in Square.YieldBoardMoves())
+                {
+                    MotionFigure motionFigure = new MotionFigure(figureOnSquare, toItem);
+                    if(moves.CanMove(motionFigure))
+                        yield return motionFigure.ToString();
+                }
         }
     }
 }
