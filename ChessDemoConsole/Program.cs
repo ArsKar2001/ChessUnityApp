@@ -40,5 +40,9 @@ namespace ChessDemoConsole
             stringBuilder.AppendLine("    a b c d i f g h ");
             return stringBuilder.ToString();
         }
+        public void PrintBoard(string text)
+        {
+
+        }
     }
 }
