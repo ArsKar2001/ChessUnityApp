@@ -14,19 +14,19 @@ namespace ChessLibrary
         /// <summary>
         /// Выбранная фигура:
         /// </summary>
-        public Figure figure { get; private set; }
+        public Figure Figure { get; private set; }
         /// <summary>
         /// откуда идет,
         /// </summary>
-        public Square from { get; private set; }
+        public Square From { get; private set; }
         /// <summary>
         /// куда может пойти,
         /// </summary>
-        public Square to { get; private set; }
+        public Square To { get; private set; }
         /// <summary>
         /// может ли превратиться.
         /// </summary>
-        public Figure promotionFigure { get; private set; }
+        public Figure PromotionFigure { get; private set; }
         /// <summary>
         /// Параметрический конструктор
         /// </summary>
@@ -34,12 +34,12 @@ namespace ChessLibrary
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <param name="promotionFigure"></param>
-        public MotionFigure(Figure figure, Square from, Square to, Figure promotionFigure)
+        public MotionFigure(FigureOnSquare figure, Square to, Figure promotionFigure = Figure.none)
         {
-            this.figure = figure;
-            this.from = from;
-            this.to = to;
-            this.promotionFigure = promotionFigure;
+            this.Figure = figure.Figure;
+            this.From = figure.Square;
+            this.To = to;
+            this.PromotionFigure = promotionFigure;
         }
         /// <summary>
         /// Перемещение фигуры.
@@ -49,11 +49,16 @@ namespace ChessLibrary
         /// <param name="move"></param>
         public MotionFigure(string move)
         {
-            this.figure = (Figure)move[0];
-            this.from = new Square(move.Substring(1,2));
-            this.to = new Square(move.Substring(3,2));
-            if (move.Length == 6) this.promotionFigure = (Figure)move[5];
-            else this.promotionFigure = Figure.none;
+            this.Figure = (Figure)move[0];
+            this.From = new Square(move.Substring(1,2));
+            this.To = new Square(move.Substring(3,2));
+            if (move.Length == 6) this.PromotionFigure = (Figure)move[5];
+            else this.PromotionFigure = Figure.none;
+        }
+
+        public override string ToString()
+        {
+            return ((char)Figure).ToString() + From.Name + To.Name;
         }
     }
 }

@@ -11,8 +11,8 @@ namespace ChessLibrary
     /// </summary>
     class MovesFigures
     {
-        MotionFigure motionFigure;
-        BoardClass board;
+        private MotionFigure motionFigure;
+        readonly BoardClass board;
 
         public MovesFigures(BoardClass board)
         {
@@ -34,8 +34,8 @@ namespace ChessLibrary
         /// <returns></returns>
         private bool CanMoveTo()
         {
-            return motionFigure.to.OnBoard() &&
-                   board.GetFigureOnSquare(motionFigure.to).GetColor() != board.moveColor;
+            return motionFigure.To.OnBoard() &&
+                   board.GetFigureOnSquare(motionFigure.To).GetColor() != board.MoveColor;
         }
         /// <summary>
         /// Может ли пойти оттуда...
@@ -43,8 +43,8 @@ namespace ChessLibrary
         /// <returns></returns>
         private bool CanMoveFrom()
         {
-            return motionFigure.from.OnBoard() &&
-                   motionFigure.figure.GetColor() == board.moveColor;
+            return motionFigure.From.OnBoard() &&
+                   motionFigure.Figure.GetColor() == board.MoveColor;
         }
     }
 }

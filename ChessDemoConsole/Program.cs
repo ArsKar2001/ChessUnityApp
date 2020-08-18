@@ -9,14 +9,18 @@ namespace ChessDemoConsole
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            Chess chess = new Chess();
+            Chess chess = new Chess("8/3q4/8/8/8/8/1Q6/8 w - - 0 1");
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine(chess.fen);
-                Console.WriteLine(ChessWriteAscii(chess));
+                Console.WriteLine(chess.Fen);
+                OutBoardPrintColor(ChessWriteAscii(chess));
+                foreach (var item in chess.YieldvalidMoves())
+                {
+                    Console.WriteLine(item);
+                }
                 string move = Console.ReadLine();
                 if (move == "") break;
                 chess = chess.Move(move);
@@ -31,18 +35,35 @@ namespace ChessDemoConsole
                 stringBuilder.Append(y + 1 + " | ");
                 for (int x = 0; x < 8; x++)
                 {
-                    stringBuilder.Append(chess.GetFigure(x, y) + " ");
+                    stringBuilder.Append(chess.GetFigure(y, x) + " ");
                 }
                 stringBuilder.Append("| ");
                 stringBuilder.AppendLine();
             }
             stringBuilder.AppendLine("  +-----------------+ ");
-            stringBuilder.AppendLine("    a b c d i f g h ");
+            stringBuilder.AppendLine("    a b c d e f g h ");
             return stringBuilder.ToString();
         }
+<<<<<<< HEAD
         public void PrintBoard(string text)
         {
 
+=======
+        public static void OutBoardPrintColor(string chess)
+        {
+            ConsoleColor color = Console.ForegroundColor;
+            foreach (var item in chess)
+            {
+                if (item >= 'a' && item <= 'z')
+                    Console.ForegroundColor = ConsoleColor.Red;
+                else if (item >= 'A' && item <= 'Z')
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                else
+                    Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(item);
+            }
+            Console.ForegroundColor = color;
+>>>>>>> 0448eac461a352ade7202de52cf7695d05272d75
         }
     }
 }
