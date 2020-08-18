@@ -26,8 +26,9 @@ namespace ChessLibrary
         public bool CanMove(MotionFigure motionFigure)
         {
             this.motionFigure = motionFigure;
-            return CanMoveFrom() && CanMoveTo();
+            return CanMoveFrom() && CanMoveTo() && CanFigureMove();
         }
+
         /// <summary>
         /// Может ди пойти туда...
         /// </summary>
@@ -46,5 +47,51 @@ namespace ChessLibrary
             return motionFigure.From.OnBoard() &&
                    motionFigure.Figure.GetColor() == board.MoveColor;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private bool CanFigureMove()
+        {
+            switch (motionFigure.Figure)
+            {
+                case Figure.whiteKing:
+                case Figure.blackKing:
+                    return CanMoveKing();
+
+                case Figure.whiteQueen:
+                case Figure.blackQueen:
+                    return false;
+
+                case Figure.whiteRook:
+                case Figure.blackRook:
+                    return CanMovrRook();
+
+                case Figure.whiteBishop:
+                case Figure.blackBishop:
+                    return false;
+
+                case Figure.whiteKnight:
+                case Figure.blackKnight:
+                    return CanMoveKnight();
+
+                case Figure.whitePawn:
+                case Figure.blackPawn:
+                    return false;
+
+                default:
+                    return false;
+            }
+        }
+
+        private bool CanMovrRook() =>
+            motionFigure.AbsDeltaX == 0 || motionFigure.AbsDeltaY == 0;
+
+        private bool CanMoveKnight() =>
+            (motionFigure.AbsDeltaX == 2 && motionFigure.AbsDeltaY == 1) ||
+            (motionFigure.AbsDeltaX == 1 && motionFigure.AbsDeltaY == 2);
+
+        private bool CanMoveKing() =>
+            motionFigure.AbsDeltaX <= 1 && motionFigure.AbsDeltaY <= 1;
     }
 }
