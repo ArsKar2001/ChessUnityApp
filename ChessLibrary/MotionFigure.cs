@@ -55,10 +55,18 @@ namespace ChessLibrary
             if (move.Length == 6) this.PromotionFigure = (Figure)move[5];
             else this.PromotionFigure = Figure.none;
         }
+        /// <summary>
+        /// Возвращает строковое представление объекта MotionFigure
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString() => 
+            ((char)Figure).ToString() + From.Name + To.Name;
 
-        public override string ToString()
-        {
-            return ((char)Figure).ToString() + From.Name + To.Name;
-        }
+        public int DeltaX =>
+            To.X - From.X;
+        public int DeltaY =>
+            To.Y - From.Y;
+        public int AbsDeltaX => Math.Abs(DeltaX);
+        public int AbsDeltaY => Math.Abs(DeltaY);
     }
 }

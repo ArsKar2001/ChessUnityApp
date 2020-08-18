@@ -25,9 +25,15 @@ namespace ChessLibrary
         /// <returns></returns>
         public static Color FlipColor(this Color color)
         {
-            if (color == Color.black) return Color.white;
-            if (color == Color.white) return Color.black;
-            return color;
+            switch (color)
+            {
+                case Color.black:
+                    return Color.white;
+                case Color.white:
+                    return Color.black;
+                default:
+                    return color;
+            }
         }
     }
 }

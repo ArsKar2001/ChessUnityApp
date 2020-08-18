@@ -124,10 +124,10 @@ namespace ChessLibrary
 
         private object FenGetDrawNumber() => this.DrawNumber.ToString();
 
-        private object FenGetMoveNumber() => 
-            (MoveColor == Color.white) ? 
-            (this.MoveNumber++).ToString() :
-            this.MoveNumber.ToString();
+        private object FenGetMoveNumber() =>
+            (MoveColor == Color.white) ?
+            (MoveNumber + 1).ToString() :
+            MoveNumber.ToString();
 
 
         /// <summary>

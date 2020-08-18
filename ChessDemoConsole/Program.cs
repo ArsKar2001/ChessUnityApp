@@ -11,7 +11,7 @@ namespace ChessDemoConsole
     {
         static void Main()
         {
-            Chess chess = new Chess("8/3q4/8/8/8/8/1Q6/8 w - - 0 1");
+            Chess chess = new Chess("8/3k4/8/8/8/8/1R6/8 w - - 0 1");
             while (true)
             {
                 Console.Clear();
@@ -44,11 +44,6 @@ namespace ChessDemoConsole
             stringBuilder.AppendLine("    a b c d e f g h ");
             return stringBuilder.ToString();
         }
-<<<<<<< HEAD
-        public void PrintBoard(string text)
-        {
-
-=======
         public static void OutBoardPrintColor(string chess)
         {
             ConsoleColor color = Console.ForegroundColor;
@@ -63,7 +58,6 @@ namespace ChessDemoConsole
                 Console.Write(item);
             }
             Console.ForegroundColor = color;
->>>>>>> 0448eac461a352ade7202de52cf7695d05272d75
         }
     }
 }
