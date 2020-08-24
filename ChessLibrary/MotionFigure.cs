@@ -31,7 +31,6 @@ namespace ChessLibrary
         /// Параметрический конструктор
         /// </summary>
         /// <param name="figure"></param>
-        /// <param name="from"></param>
         /// <param name="to"></param>
         /// <param name="promotionFigure"></param>
         public MotionFigure(FigureOnSquare figure, Square to, Figure promotionFigure = Figure.none)
@@ -59,8 +58,11 @@ namespace ChessLibrary
         /// Возвращает строковое представление объекта MotionFigure
         /// </summary>
         /// <returns></returns>
-        public override string ToString() => 
-            ((char)Figure).ToString() + From.Name + To.Name;
+        public override string ToString() =>
+            ((char)Figure).ToString() +
+            From.Name +
+            To.Name +
+            (PromotionFigure == Figure.none ? "" : ((char)PromotionFigure).ToString());
 
         public int DeltaX =>
             To.X - From.X;

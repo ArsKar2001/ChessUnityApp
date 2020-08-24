@@ -77,11 +77,54 @@ namespace ChessLibrary
 
                 case Figure.whitePawn:
                 case Figure.blackPawn:
-                    return false;
+                    return CanMovePawn();
 
                 default:
                     return false;
             }
+        }
+
+        private bool CanMovePawn()
+        {
+            if (motionFigure.From.X < 1 || motionFigure.From.Y > 6)
+                return false;
+            int stepY = motionFigure.Figure.GetColor() == Color.white ? +1 : -1;
+            return CanPawnGoStep(stepY) || CanPawnJump(stepY) || CanPawnEat(stepY);
+        }
+
+        private bool CanPawnGoStep(int stepY)
+        {
+            if (board.GetFigureOnSquare(motionFigure.To) == Figure.none)
+                if (motionFigure.DeltaY == 0)
+                    if (motionFigure.DeltaX == stepY)
+                        return true;
+            return false;
+        }
+
+        private bool CanPawnJump(int stepY)
+        {
+            if (board.GetFigureOnSquare(motionFigure.To) == Figure.none)
+                if ((motionFigure.From.X == 1 && stepY == +1)
+                    || (motionFigure.From.X == 6 && stepY == -1))
+                    if (motionFigure.DeltaY == 0)
+                        if (motionFigure.DeltaX == 2 * stepY)
+                            if (board.GetFigureOnSquare(
+                                new Square(motionFigure.To.X, motionFigure.To.Y)
+                                ) == Figure.none)
+                                return true;
+            return false;
+        }
+
+        private bool CanPawnEat(int stepY)
+        {
+            if(board.GetFigureOnSquare(motionFigure.To) != Figure.none)
+                if(motionFigure.DeltaX == stepY)
+                    if(motionFigure.AbsDeltaY == 1)
+                        if (board.GetFigureOnSquare(
+                                new Square(motionFigure.To.X, motionFigure.To.Y)
+                                ) != Figure.none)
+                            return true;
+            return false;
         }
 
         private bool CanMoveQueen() =>

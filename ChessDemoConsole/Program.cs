@@ -11,7 +11,7 @@ namespace ChessDemoConsole
     {
         static void Main()
         {
-            Chess chess = new Chess("8/3k4/8/8/8/8/1R6/8 w - - 0 1");
+            Chess chess = new Chess("8/3PPPP1/8/8/8/8/3pppp1/8 w - - 0 1");
             while (true)
             {
                 Console.Clear();

@@ -70,7 +70,9 @@ namespace ChessLibrary
         {
             BoardClass nextBoardClass = new BoardClass(Fen);
             nextBoardClass.SetFigureOnSquare(motionFigure.From, Figure.none);
-            nextBoardClass.SetFigureOnSquare(motionFigure.To, motionFigure.Figure);
+            nextBoardClass.SetFigureOnSquare(motionFigure.To, 
+                motionFigure.PromotionFigure == Figure.none ? motionFigure.Figure : motionFigure.PromotionFigure
+                );
             nextBoardClass.MoveColor = MoveColor.FlipColor();
             nextBoardClass.GenerateFEN();
             return nextBoardClass;

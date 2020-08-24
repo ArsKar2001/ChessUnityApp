@@ -71,11 +71,12 @@ namespace ChessLibrary
         {
             foreach (FigureOnSquare figureOnSquare in board.YieldFiguresOnSquare())
                 foreach (Square toItem in Square.YieldBoardMoves())
-                {
-                    MotionFigure motionFigure = new MotionFigure(figureOnSquare, toItem);
-                    if(moves.CanMove(motionFigure))
-                        yield return motionFigure.ToString();
-                }
+                    foreach (Figure promotion in figureOnSquare.Figure.Promotions(toItem))
+                    {
+                        MotionFigure motionFigure = new MotionFigure(figureOnSquare, toItem, promotion);
+                        if (moves.CanMove(motionFigure))
+                            yield return motionFigure.ToString();
+                    }
         }
     }
 }
