@@ -12,9 +12,9 @@ namespace ChessLibrary
     class MovesFigures
     {
         private MotionFigure motionFigure;
-        readonly BoardClass board;
+        readonly Board board;
 
-        public MovesFigures(BoardClass board)
+        public MovesFigures(Board board)
         {
             this.board = board;
         }

@@ -14,7 +14,7 @@ namespace ChessLibrary
 
         public string Fen => board.Fen;
 
-        readonly BoardClass board;
+        readonly Board board;
         readonly MovesFigures moves;
 
         /// <summary>
@@ -27,14 +27,14 @@ namespace ChessLibrary
         /// </param>
         public Chess(string fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
         {
-            board = new BoardClass(fen);
+            board = new Board(fen);
             moves = new MovesFigures(board);
         }
         /// <summary>
         /// Дополнительный конструктор для создания шахмат на новой доске.
         /// </summary>
         /// <param name="board"></param>
-        private Chess(BoardClass board)
+        private Chess(Board board)
         {
             this.board = board;
             moves = new MovesFigures(board);
@@ -49,7 +49,7 @@ namespace ChessLibrary
             MotionFigure motionFigure = new MotionFigure(move);
             if (!moves.CanMove(motionFigure)) return this;
 
-            BoardClass nextBoard = board.Move(motionFigure);
+            Board nextBoard = board.Move(motionFigure);
             Chess nexChess = new Chess(nextBoard);
 
             return nexChess;
