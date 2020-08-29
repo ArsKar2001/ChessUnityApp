@@ -11,13 +11,13 @@ namespace ChessDemoConsole
     {
         static void Main()
         {
-            Chess chess = new Chess("8/3PPPP1/8/8/8/8/3pppp1/8 w - - 0 1");
+            Chess chess = new Chess("r3k2r/8/8/q7/8/8/1PP5/R3K2R w KQkq - 0 1");
             while (true)
             {
                 Console.Clear();
                 Console.WriteLine(chess.Fen);
                 OutBoardPrintColor(ChessWriteAscii(chess));
-                foreach (var item in chess.YieldvalidMoves())
+                foreach (var item in chess.YieldValidMoves())
                 {
                     Console.WriteLine(item);
                 }

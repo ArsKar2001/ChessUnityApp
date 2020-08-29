@@ -15,6 +15,8 @@ namespace ChessLibrary
         /// Выбранная фигура:
         /// </summary>
         public Figure Figure { get; private set; }
+
+        public Figure PlacedFigure => promotionFigure == Figure.none ? Figure : promotionFigure;
         /// <summary>
         /// откуда идет,
         /// </summary>
@@ -26,7 +28,21 @@ namespace ChessLibrary
         /// <summary>
         /// может ли превратиться.
         /// </summary>
-        public Figure PromotionFigure { get; private set; }
+        public Figure promotionFigure { get; private set; }
+        /// <summary>
+        /// Статический пустой экземпляр класса MotionFigure.
+        /// </summary>
+        public static MotionFigure none = new MotionFigure();
+        /// <summary>
+        /// Конструктор, создающий пустой экземпляр класса MotionFigure.
+        /// </summary>
+        public MotionFigure()
+        {
+            Figure = Figure.none;
+            From = Square.none;
+            To = Square.none;
+            promotionFigure = Figure.none;
+        }
         /// <summary>
         /// Параметрический конструктор
         /// </summary>
@@ -38,7 +54,7 @@ namespace ChessLibrary
             this.Figure = figure.Figure;
             this.From = figure.Square;
             this.To = to;
-            this.PromotionFigure = promotionFigure;
+            this.promotionFigure = promotionFigure;
         }
         /// <summary>
         /// Перемещение фигуры.
@@ -51,8 +67,8 @@ namespace ChessLibrary
             this.Figure = (Figure)move[0];
             this.From = new Square(move.Substring(1,2));
             this.To = new Square(move.Substring(3,2));
-            if (move.Length == 6) this.PromotionFigure = (Figure)move[5];
-            else this.PromotionFigure = Figure.none;
+            if (move.Length == 6) this.promotionFigure = (Figure)move[5];
+            else this.promotionFigure = Figure.none;
         }
         /// <summary>
         /// Возвращает строковое представление объекта MotionFigure
@@ -62,13 +78,17 @@ namespace ChessLibrary
             ((char)Figure).ToString() +
             From.Name +
             To.Name +
-            (PromotionFigure == Figure.none ? "" : ((char)PromotionFigure).ToString());
+            (promotionFigure == Figure.none ? "" : ((char)promotionFigure).ToString());
 
         public int DeltaX =>
             To.X - From.X;
         public int DeltaY =>
             To.Y - From.Y;
+
         public int AbsDeltaX => Math.Abs(DeltaX);
         public int AbsDeltaY => Math.Abs(DeltaY);
+
+        public int SignX => Math.Sign(DeltaX);
+        public int SignY => Math.Sign(DeltaY);
     }
 }

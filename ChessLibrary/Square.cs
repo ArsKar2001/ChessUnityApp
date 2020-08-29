@@ -58,12 +58,20 @@ namespace ChessLibrary
             return (this.X >= 0 && this.X < 8) &&
                    (this.Y >= 0 && this.Y < 8);
         }
-
+        /// <summary>
+        /// Формирует перечисление всех клеток на доске.
+        /// </summary>
+        /// <returns></returns>
         public static IEnumerable<Square> YieldBoardMoves()
         {
             for (int x = 0; x < 8; x++)
                 for (int y = 0; y < 8; y++)
                     yield return new Square(x, y);
         }
+
+        public static bool operator ==(Square a, Square b) =>
+            a.X == b.X && a.Y == b.Y;
+        public static bool operator !=(Square a, Square b) =>
+            !(a == b);
     }
 }

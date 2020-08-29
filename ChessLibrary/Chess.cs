@@ -40,7 +40,7 @@ namespace ChessLibrary
             moves = new MovesFigures(board);
         }
         /// <summary>
-        /// Совершается ход/Создается новая оска с измененным расположением фигур
+        /// Совершается ход/Создается новая доска с измененным расположением фигур
         /// </summary>
         /// <param name="move"></param>
         /// <returns></returns>
@@ -66,8 +66,11 @@ namespace ChessLibrary
             Figure figure = board.GetFigureOnSquare(square);
             return figure == Figure.none ? '.' : (char)figure;
         }
-
-        public IEnumerable<string> YieldvalidMoves()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<string> YieldValidMoves()
         {
             foreach (FigureOnSquare figureOnSquare in board.YieldFiguresOnSquare())
                 foreach (Square toItem in Square.YieldBoardMoves())
@@ -75,7 +78,8 @@ namespace ChessLibrary
                     {
                         MotionFigure motionFigure = new MotionFigure(figureOnSquare, toItem, promotion);
                         if (moves.CanMove(motionFigure))
-                            yield return motionFigure.ToString();
+                            if(!board.IsCheckShahAfter(motionFigure))
+                                yield return motionFigure.ToString();
                     }
         }
     }

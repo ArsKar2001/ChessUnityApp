@@ -36,7 +36,7 @@ namespace ChessLibrary
         private bool CanMoveTo()
         {
             return motionFigure.To.OnBoard() &&
-                   board.GetFigureOnSquare(motionFigure.To).GetColor() != board.MoveColor;
+                   board.GetFigureOnSquare(motionFigure.To).GetColor() != board.moveColor;
         }
         /// <summary>
         /// Может ли пойти оттуда...
@@ -45,7 +45,7 @@ namespace ChessLibrary
         private bool CanMoveFrom()
         {
             return motionFigure.From.OnBoard() &&
-                   motionFigure.Figure.GetColor() == board.MoveColor;
+                   motionFigure.Figure.GetColor() == board.moveColor;
         }
         /// <summary>
         /// 
@@ -57,7 +57,7 @@ namespace ChessLibrary
             {
                 case Figure.whiteKing:
                 case Figure.blackKing:
-                    return CanMoveKing();
+                    return CanMoveKing() || CanKingCastle();
 
                 case Figure.whiteQueen:
                 case Figure.blackQueen:
@@ -77,37 +77,111 @@ namespace ChessLibrary
 
                 case Figure.whitePawn:
                 case Figure.blackPawn:
-                    return CanMovePawn();
+                    return CanPawnMove();
 
                 default:
                     return false;
             }
         }
 
-        private bool CanMovePawn()
+        private bool CanKingCastle()
+        {
+            return CanBlackKingCastle() || CanWhiteKingCastle();
+        }
+
+        private bool CanBlackKingCastle()
+        {
+            if (motionFigure.Figure == Figure.blackKing)
+            {
+                if (motionFigure.From == new Square("e8"))
+                    if (motionFigure.To == new Square("g8"))
+                        if (board.CanCastleH8)
+                            if (board.GetFigureOnSquare(new Square("h8")) == Figure.blackRook)
+                                if (board.GetFigureOnSquare(new Square("f8")) == Figure.none)
+                                    if (board.GetFigureOnSquare(new Square("g8")) == Figure.none)
+                                        if(board.IsCheckShah())
+                                        if(board.IsCheckAfterMove(new MotionFigure("Ke8f8")))
+                                        return true;
+                if (motionFigure.From == new Square("e8"))
+                    if (motionFigure.To == new Square("c8"))
+                        if (board.CanCastleA8)
+                            if (board.GetFigureOnSquare(new Square("a8")) == Figure.blackRook)
+                                if (board.GetFigureOnSquare(new Square("d8")) == Figure.none)
+                                    if (board.GetFigureOnSquare(new Square("c8")) == Figure.none)
+                                        if (board.GetFigureOnSquare(new Square("b8")) == Figure.none)
+                                            if(board.IsCheckShah())
+                                            if(board.IsCheckAfterMove(new MotionFigure("Ke8d8")))
+                                            return true;
+            }
+            return false;
+        }
+
+        private bool CanWhiteKingCastle()
+        {
+            if (motionFigure.Figure == Figure.whiteKing)
+            {
+                if (motionFigure.From == new Square("e1"))
+                    if (motionFigure.To == new Square("g1"))
+                        if (board.CanCastleH1)
+                            if (board.GetFigureOnSquare(new Square("h1")) == Figure.whiteRook)
+                                if (board.GetFigureOnSquare(new Square("f1")) == Figure.none)
+                                    if (board.GetFigureOnSquare(new Square("g1")) == Figure.none)
+                                        if(board.IsCheckShah())
+                                        if(board.IsCheckAfterMove(new MotionFigure("Ke1f1")))
+                                        return true;
+                if (motionFigure.From == new Square("e1"))
+                    if (motionFigure.To == new Square("c1"))
+                        if (board.CanCastleA1)
+                            if (board.GetFigureOnSquare(new Square("a1")) == Figure.whiteRook)
+                                if (board.GetFigureOnSquare(new Square("d1")) == Figure.none)
+                                    if (board.GetFigureOnSquare(new Square("c1")) == Figure.none)
+                                        if (board.GetFigureOnSquare(new Square("b1")) == Figure.none)
+                                            if(board.IsCheckShah())
+                                            if(board.IsCheckAfterMove(new MotionFigure("Ke1d1")))
+                                            return true;
+            }
+            return false;
+        }
+
+        private bool CanPawnMove()
         {
             if (motionFigure.From.X < 1 || motionFigure.From.Y > 6)
                 return false;
-            int stepY = motionFigure.Figure.GetColor() == Color.white ? +1 : -1;
-            return CanPawnGoStep(stepY) || CanPawnJump(stepY) || CanPawnEat(stepY);
+            int stepX = motionFigure.Figure.GetColor() == Color.white ? +1 : -1;
+            return CanPawnGoStep(stepX) || 
+                CanPawnJump(stepX) || 
+                CanPawnEat(stepX) ||
+                CanPavwEnp(stepX);
         }
 
-        private bool CanPawnGoStep(int stepY)
+        private bool CanPavwEnp(int stepX)
+        {
+            if (motionFigure.To == board.enpSquare)
+                if (board.GetFigureOnSquare(motionFigure.To) == Figure.none)
+                    if (motionFigure.DeltaX == stepX)
+                        if (motionFigure.AbsDeltaY == 1)
+                            if (stepX == +1 && motionFigure.From.X == 4 ||
+                                stepX == -1 && motionFigure.From.X == 3)
+                                return true;
+            return false;
+        }
+
+        private bool CanPawnGoStep(int stepX)
         {
             if (board.GetFigureOnSquare(motionFigure.To) == Figure.none)
                 if (motionFigure.DeltaY == 0)
-                    if (motionFigure.DeltaX == stepY)
+                    if (motionFigure.DeltaX == stepX)
                         return true;
             return false;
         }
 
-        private bool CanPawnJump(int stepY)
+        private bool CanPawnJump(int stepX)
         {
             if (board.GetFigureOnSquare(motionFigure.To) == Figure.none)
-                if ((motionFigure.From.X == 1 && stepY == +1)
-                    || (motionFigure.From.X == 6 && stepY == -1))
+                if ((motionFigure.From.X == 1 && stepX == +1)
+                    || (motionFigure.From.X == 6 && stepX == -1))
                     if (motionFigure.DeltaY == 0)
-                        if (motionFigure.DeltaX == 2 * stepY)
+                        if (motionFigure.DeltaX == 2 * stepX)
                             if (board.GetFigureOnSquare(
                                 new Square(motionFigure.To.X, motionFigure.To.Y)
                                 ) == Figure.none)
@@ -115,11 +189,11 @@ namespace ChessLibrary
             return false;
         }
 
-        private bool CanPawnEat(int stepY)
+        private bool CanPawnEat(int stepX)
         {
-            if(board.GetFigureOnSquare(motionFigure.To) != Figure.none)
-                if(motionFigure.DeltaX == stepY)
-                    if(motionFigure.AbsDeltaY == 1)
+            if (board.GetFigureOnSquare(motionFigure.To) != Figure.none)
+                if (motionFigure.DeltaX == stepX)
+                    if (motionFigure.AbsDeltaY == 1)
                         if (board.GetFigureOnSquare(
                                 new Square(motionFigure.To.X, motionFigure.To.Y)
                                 ) != Figure.none)
@@ -127,21 +201,52 @@ namespace ChessLibrary
             return false;
         }
 
-        private bool CanMoveQueen() =>
-            (motionFigure.AbsDeltaX == motionFigure.AbsDeltaY) ||
-            motionFigure.AbsDeltaX == 0 || motionFigure.AbsDeltaY == 0;
+        private bool CanMoveQueen()
+        {
+            Square squareAt = motionFigure.From;
+            do
+            {
+                squareAt = new Square(squareAt.X + motionFigure.SignX, squareAt.Y + motionFigure.SignY);
+                if (squareAt == motionFigure.To)
+                    return true;
 
-        private bool CanMoveBishop() =>
-            motionFigure.AbsDeltaX == motionFigure.AbsDeltaY;
+            } while (squareAt.OnBoard() && board.GetFigureOnSquare(squareAt) == Figure.none);
+            return false;
+        }
 
-        private bool CanMovrRook() =>
-            motionFigure.AbsDeltaX == 0 || motionFigure.AbsDeltaY == 0;
+        private bool CanMoveBishop()
+        {
+            Square squareAt = motionFigure.From;
+            do
+            {
+                squareAt = new Square(squareAt.X + motionFigure.SignX, squareAt.Y + motionFigure.SignY);
+                if (squareAt == motionFigure.To)
+                    if (motionFigure.AbsDeltaX == motionFigure.AbsDeltaY)
+                        return true;
+
+            } while (squareAt.OnBoard() && board.GetFigureOnSquare(squareAt) == Figure.none);
+            return false;
+        }
+
+        private bool CanMovrRook()
+        {
+            Square squareAt = motionFigure.From;
+            do
+            {
+                squareAt = new Square(squareAt.X + motionFigure.SignX, squareAt.Y + motionFigure.SignY);
+                if (squareAt == motionFigure.To)
+                    if (motionFigure.AbsDeltaX == 0 || motionFigure.AbsDeltaY == 0)
+                        return true;
+
+            } while (squareAt.OnBoard() && board.GetFigureOnSquare(squareAt) == Figure.none);
+            return false;
+        }
 
         private bool CanMoveKnight() =>
             (motionFigure.AbsDeltaX == 2 && motionFigure.AbsDeltaY == 1) ||
             (motionFigure.AbsDeltaX == 1 && motionFigure.AbsDeltaY == 2);
 
         private bool CanMoveKing() =>
-            motionFigure.AbsDeltaX <= 1 && motionFigure.AbsDeltaY <= 1;
+                    motionFigure.AbsDeltaX <= 1 && motionFigure.AbsDeltaY <= 1;
     }
 }
