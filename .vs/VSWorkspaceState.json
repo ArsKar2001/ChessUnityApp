@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Assets\\Scrypts",
+    "\\ChessDemoConsole",
+    "\\ChessLibrary"
   ],
+  "SelectedNode": "\\ChessLibrary\\BoardNextMove.cs",
   "PreviewInSolutionExplorer": false
 }

@@ -11,7 +11,7 @@ namespace ChessDemoConsole
     {
         static void Main()
         {
-            Chess chess = new Chess("r3k2r/8/8/q7/8/8/1PP5/R3K2R w KQkq - 0 1");
+            Chess chess = new Chess("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
             while (true)
             {
                 Console.Clear();
@@ -42,6 +42,12 @@ namespace ChessDemoConsole
             }
             stringBuilder.AppendLine("  +-----------------+ ");
             stringBuilder.AppendLine("    a b c d e f g h ");
+            if (chess.IsCheckShahk)
+                stringBuilder.AppendLine("Вам шах!");
+            if (chess.IsCheckMat)
+                stringBuilder.AppendLine("Мат. Game Over!");
+            if (chess.IsCheckPat)
+                stringBuilder.AppendLine("Патовая ситуация!");
             return stringBuilder.ToString();
         }
         public static void OutBoardPrintColor(string chess)

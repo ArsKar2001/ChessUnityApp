@@ -2,23 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ChessLibrary
 {
     /// <summary>
-    /// 
+    /// Предсталяет класс - доски для следующего хода.
     /// </summary>
     class BoardNextMove : Board
     {
         MotionFigure motionFigure;
         /// <summary>
-        /// 
+        /// Параметрический конструктор, который создает новую доску по измененной FEN-позиции фигур при выполнении хода фигуры.
         /// </summary>
         /// <param name="fen"></param>
         /// <param name="motionFigure"></param>
         public BoardNextMove(string fen, MotionFigure motionFigure) : base(fen)
         {
+            Fen = fen;
             this.motionFigure = motionFigure;
             MoveFigure();
 
@@ -31,9 +31,11 @@ namespace ChessLibrary
             MoveNumber();
             UpdateColorMove();
 
-            GenerateFEN();
+            Fen = GenerateFEN();
         }
-
+        /// <summary>
+        /// Перемещает ладью при совершении ракировки с королем.
+        /// </summary>
         private void RookMovementToCastle()
         {
             if (motionFigure.Figure == Figure.whiteKing)
@@ -69,7 +71,9 @@ namespace ChessLibrary
                     }
                 }
         }
-
+        /// <summary>
+        /// Определяет возможные ракировки для короля.
+        /// </summary>
         private void UpdateCastleFlags()
         {
             switch (motionFigure.Figure)
@@ -97,7 +101,9 @@ namespace ChessLibrary
                 default: return;
             }
         }
-
+        /// <summary>
+        /// Рубит пешкой чужую пешку на битом поле.
+        /// </summary>
         private void DropFigureEnpassantSquare()
         {
             if (motionFigure.To == enpSquare)
@@ -107,7 +113,7 @@ namespace ChessLibrary
         }
 
         /// <summary>
-        /// 
+        /// Определяет наличие битого поля.
         /// </summary>
         private void SetEnpassantSquare()
         {
@@ -120,14 +126,14 @@ namespace ChessLibrary
                     enpSquare = new Square(5, motionFigure.From.Y);
         }
         /// <summary>
-        /// 
+        /// Переключает флаг активного цвета.
         /// </summary>
         private void UpdateColorMove()
         {
             moveColor = moveColor.FlipColor();
         }
         /// <summary>
-        /// 
+        /// Инкриментирует счетчик хода.
         /// </summary>
         private void MoveNumber()
         {
@@ -135,8 +141,9 @@ namespace ChessLibrary
                 moveNumber++;
         }
         /// <summary>
-        /// 
-        /// 
+        /// Перемещает фигуру на доске.
+        /// Удаляет на ячейке, откуда она идет.
+        /// Устанавливает на ячеку, куда она должна переместиться. 
         /// </summary>
         private void MoveFigure()
         {
@@ -144,7 +151,7 @@ namespace ChessLibrary
             SetFigureOnSquare(motionFigure.To, motionFigure.PlacedFigure);
         }
         /// <summary>
-        /// Устанавливаем выбранную фигуру на доску
+        /// Устанавливаем фигуру на ячейку доски
         /// </summary>
         /// <param name="square"></param>
         /// <param name="figure"></param>
@@ -154,14 +161,14 @@ namespace ChessLibrary
                 figures[square.X, square.Y] = figure;
         }
         /// <summary>
-        /// 
+        /// Генереирует новую строку FEN-позиции шахматной партии после совершения каждого хода.
         /// </summary>
-        private void GenerateFEN() => Fen = String.Format("{0} {1} {2} {3} {4} {5}",
+        private string GenerateFEN() => Fen = String.Format("{0} {1} {2} {3} {4} {5}",
                 FenGetFigures(), FenGetMoveColor(),
                 FenGetCanCastle(), FenGetEnpSquaret(),
                 FenGetDrawNumber(), FenGetMoveNumber());
         /// <summary>
-        /// 
+        /// Формирует новую строку FEN-позиции шахматных фигур.
         /// </summary>
         /// <returns></returns>
         private string FenGetFigures()
@@ -182,13 +189,13 @@ namespace ChessLibrary
             return sb.ToString();
         }
         /// <summary>
-        /// 
+        /// Формирует новую строку FEN-позиции активный цвет.
         /// </summary>
         /// <returns></returns>
         private string FenGetMoveColor() => 
             this.moveColor == Color.black ? "b" : "w";
         /// <summary>
-        /// 
+        /// Формирует новую строку FEN-позиции возможных ракировок.
         /// </summary>
         /// <returns></returns>
         private string FenGetCanCastle()
@@ -200,17 +207,17 @@ namespace ChessLibrary
             return var == "" ? "-" : var;
         }
         /// <summary>
-        /// 
+        /// Формирует новую строку FEN-позиции наличия битого поля.
         /// </summary>
         /// <returns></returns>
         private string FenGetEnpSquaret() => this.enpSquare.Name;
         /// <summary>
-        /// 
+        /// Формирует новую строку FEN-позиции. Счётчик полуходов. Число полуходов, прошедших с последнего хода пешки или взятия фигуры. Используется для определения применения правила 50 ходов.
         /// </summary>
         /// <returns></returns>
         private string FenGetDrawNumber() => this.DrawNumber.ToString();
         /// <summary>
-        /// 
+        /// Формирует новую строку FEN-позиции. Номер хода. Любой позиции может быть присвоено любое неотрицательное значение (по умолчанию 1), счётчик увеличивается на 1 после каждого хода чёрных.
         /// </summary>
         /// <returns></returns>
         private string FenGetMoveNumber() =>

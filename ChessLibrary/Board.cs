@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ChessLibrary
 {
@@ -61,7 +60,7 @@ namespace ChessLibrary
         /// <param name="fen">Запись позиций с помощью нотации Форсайта—Эдвардса (FEN)</param>
         public Board(string fen)
         {
-            this.Fen = fen;
+            Fen = fen;
             figures = new Figure[8, 8];
             Init();
         }
@@ -85,7 +84,7 @@ namespace ChessLibrary
                     yield return new FigureOnSquare(GetFigureOnSquare(square), square);
         }
         /// <summary>
-        /// Получаем фигуру на ячейке доски.
+        /// Возвращает фигуру на ячейке доски.
         /// </summary>
         /// <param name="square">Ячейка доски.</param>
         /// <returns></returns>
@@ -103,9 +102,9 @@ namespace ChessLibrary
             return IsCheckAfterMove(MotionFigure.none);
         }
         /// <summary>
-        /// Определяет, окажется ли под шахом король, если сделает выбранный ход.
+        /// Определяет, окажется ли под шахом король, если сделать выбранный ход.
         /// </summary>
-        /// <param name="motionFigure">Ячейка, куда ходит король</param>
+        /// <param name="motionFigure"></param>
         /// <returns></returns>
         internal bool IsCheckAfterMove(MotionFigure motionFigure)
         {
@@ -113,7 +112,7 @@ namespace ChessLibrary
             return after.CanEatKing();
         }
         /// <summary>
-        /// 
+        /// Определяет, возможно ли мсъесть короля выволнив этот ход.
         /// </summary>
         /// <returns></returns>
         private bool CanEatKing()
@@ -127,7 +126,10 @@ namespace ChessLibrary
             }
             return false;
         }
-
+        /// <summary>
+        /// Определяет, на какой ячейке стоит вражеский король.
+        /// </summary>
+        /// <returns></returns>
         private Square FindAlienKing()
         {
             Figure figureKing = moveColor == Color.white
@@ -146,7 +148,7 @@ namespace ChessLibrary
         private void Init()
         {
             // rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-            string[] fenParts = this.Fen.Split();
+            string[] fenParts = Fen.Split();
             InitFigures(fenParts[0]);
             InitMoveColor(fenParts[1]);
             InitCanCastle(fenParts[2]);

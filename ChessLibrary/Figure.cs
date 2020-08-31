@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ChessLibrary
 {
@@ -27,9 +26,16 @@ namespace ChessLibrary
         blackKnight = 'n',
         blackPawn = 'p'
     }
-
+    /// <summary>
+    /// Описывает свойства фигур.
+    /// </summary>
     static class FigureMetods
     {
+        /// <summary>
+        /// Определяет какого цвета фигура.
+        /// </summary>
+        /// <param name="figure"></param>
+        /// <returns></returns>
         public static Color GetColor(this Figure figure)
         {
             if (figure == Figure.none) return Color.none;
@@ -38,6 +44,12 @@ namespace ChessLibrary
                 ((char)figure).ToString().ToLower() == ((char)figure).ToString() ?
                 Color.black : Color.white;
         }
+        /// <summary>
+        /// Определяет возможные превращения для пешки.
+        /// </summary>
+        /// <param name="figure"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         public static IEnumerable<Figure> Promotions(this Figure figure, Square to)
         {
             switch (figure)
@@ -58,7 +70,6 @@ namespace ChessLibrary
                     yield return Figure.none;
                     break;
             }
-
         }
     }
 }

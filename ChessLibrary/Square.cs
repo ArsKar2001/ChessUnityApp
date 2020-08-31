@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ChessLibrary
 {
+    /// <summary>
+    /// Представляет структуру ячейки доски.
+    /// </summary>
     struct Square
     {
         /// <summary>
@@ -59,7 +61,7 @@ namespace ChessLibrary
                    (this.Y >= 0 && this.Y < 8);
         }
         /// <summary>
-        /// Формирует перечисление всех клеток на доске.
+        /// Формирует перечисление всех ячеек на доске.
         /// </summary>
         /// <returns></returns>
         public static IEnumerable<Square> YieldBoardMoves()
@@ -69,9 +71,28 @@ namespace ChessLibrary
                     yield return new Square(x, y);
         }
 
+        public override bool Equals(object obj)
+        {
+            return obj is Square square &&
+                   X == square.X &&
+                   Y == square.Y &&
+                   Name == square.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 511377105;
+            hashCode = hashCode * -1521134295 + X.GetHashCode();
+            hashCode = hashCode * -1521134295 + Y.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            return hashCode;
+        }
+
         public static bool operator ==(Square a, Square b) =>
             a.X == b.X && a.Y == b.Y;
         public static bool operator !=(Square a, Square b) =>
             !(a == b);
+
+        
     }
 }

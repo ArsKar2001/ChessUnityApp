@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ChessLibrary
 {
@@ -19,7 +18,7 @@ namespace ChessLibrary
     static class ColorMetods
     {
         /// <summary>
-        /// Перемена цвета на каждый ход
+        /// Смена цвета на каждый ход
         /// </summary>
         /// <param name="color">Входящий свет фигуры</param>
         /// <returns></returns>

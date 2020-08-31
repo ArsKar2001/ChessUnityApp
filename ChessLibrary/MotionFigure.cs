@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ChessLibrary
 {
@@ -12,21 +11,21 @@ namespace ChessLibrary
     class MotionFigure
     {
         /// <summary>
-        /// Выбранная фигура:
+        /// Выбранная фигура.
         /// </summary>
         public Figure Figure { get; private set; }
 
         public Figure PlacedFigure => promotionFigure == Figure.none ? Figure : promotionFigure;
         /// <summary>
-        /// откуда идет,
+        /// Откуда идет,...
         /// </summary>
         public Square From { get; private set; }
         /// <summary>
-        /// куда может пойти,
+        /// ...куда может пойти,...
         /// </summary>
         public Square To { get; private set; }
         /// <summary>
-        /// может ли превратиться.
+        /// ...может ли превратиться.
         /// </summary>
         public Figure promotionFigure { get; private set; }
         /// <summary>
@@ -79,9 +78,14 @@ namespace ChessLibrary
             From.Name +
             To.Name +
             (promotionFigure == Figure.none ? "" : ((char)promotionFigure).ToString());
-
+        /// <summary>
+        /// Смещение по вертикали доски.
+        /// </summary>
         public int DeltaX =>
             To.X - From.X;
+        /// <summary>
+        /// Смещение по горизонтали доски.
+        /// </summary>
         public int DeltaY =>
             To.Y - From.Y;
 

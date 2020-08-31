@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace ChessGame.Assets.Scrypts {
@@ -9,13 +10,23 @@ namespace ChessGame.Assets.Scrypts {
         /// <summary>
         /// Получает игровой объект на сцене.
         /// </summary>
-        GameObject gameObject;
+        GameObject itemGameObject;
         /// <summary>
         /// Зпоминает позицию мыши
         /// </summary>
         Vector2 GetVectorOffSet;
-        public DragAndDrop () {
-            Drop ();
+        Vector2 From;
+        Vector2 To;
+
+        public delegate void dDropObject(Vector2 from, Vector2 to);
+        public delegate void dPickObject(Vector2 from);
+
+        dDropObject DropObject;
+        dPickObject PickObject;
+
+        public DragAndDrop (dDropObject DropObject, dPickObject PickObject) {
+            this.DropObject = DropObject;
+            this.PickObject = PickObject;
         }
         /// <summary>
         /// Определение возможных состояний фигуры.
@@ -34,7 +45,6 @@ namespace ChessGame.Assets.Scrypts {
         /// Вхаимодействие с фигурами на доске.
         /// </summary>
         public void Action () {
-            Debug.Log (state);
             switch (state) {
                 case State.none:
                     if (IsMouseButtunPress ()) {
@@ -56,14 +66,17 @@ namespace ChessGame.Assets.Scrypts {
         /// Конец перетаскивания.
         /// </summary>
         private void Drop () {
-            gameObject = null;
+            To = itemGameObject.transform.position;
+            DropObject(From, To);
+            itemGameObject = null;
             state = State.none;
         }
+
         /// <summary>
         /// Фигура перетаскивается.
         /// </summary>
         private void Drag () {
-            gameObject.transform.position = GetClickPosition () + GetVectorOffSet;
+            itemGameObject.transform.position = GetClickPosition () + GetVectorOffSet;
         }
 
         private bool IsMouseButtunPress () => Input.GetMouseButton (0);
@@ -75,9 +88,10 @@ namespace ChessGame.Assets.Scrypts {
                 return;
             }
             state = State.drag;
-            GetVectorOffSet = (Vector2)clickedItem.position - clickPosition;
-            gameObject = clickedItem.gameObject;
-            Debug.Log (message: gameObject);
+            itemGameObject = clickedItem.gameObject;
+            From = clickedItem.position;
+            GetVectorOffSet = From - clickPosition;
+            PickObject(From);
         }
 
         private Vector2 GetClickPosition () {

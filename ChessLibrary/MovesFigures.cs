@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ChessLibrary
 {
@@ -13,7 +12,10 @@ namespace ChessLibrary
     {
         private MotionFigure motionFigure;
         readonly Board board;
-
+        /// <summary>
+        /// Параметрический конструктор. 
+        /// </summary>
+        /// <param name="board"></param>
         public MovesFigures(Board board)
         {
             this.board = board;
@@ -30,7 +32,7 @@ namespace ChessLibrary
         }
 
         /// <summary>
-        /// Может ди пойти туда...
+        /// Может ли пойти туда...
         /// </summary>
         /// <returns></returns>
         private bool CanMoveTo()
@@ -48,7 +50,7 @@ namespace ChessLibrary
                    motionFigure.Figure.GetColor() == board.moveColor;
         }
         /// <summary>
-        /// 
+        /// Как фигуры должны ходить.
         /// </summary>
         /// <returns></returns>
         private bool CanFigureMove()
@@ -99,7 +101,7 @@ namespace ChessLibrary
                             if (board.GetFigureOnSquare(new Square("h8")) == Figure.blackRook)
                                 if (board.GetFigureOnSquare(new Square("f8")) == Figure.none)
                                     if (board.GetFigureOnSquare(new Square("g8")) == Figure.none)
-                                        if(board.IsCheckShah())
+                                        if(!board.IsCheckShah())
                                         if(board.IsCheckAfterMove(new MotionFigure("Ke8f8")))
                                         return true;
                 if (motionFigure.From == new Square("e8"))
@@ -109,8 +111,8 @@ namespace ChessLibrary
                                 if (board.GetFigureOnSquare(new Square("d8")) == Figure.none)
                                     if (board.GetFigureOnSquare(new Square("c8")) == Figure.none)
                                         if (board.GetFigureOnSquare(new Square("b8")) == Figure.none)
-                                            if(board.IsCheckShah())
-                                            if(board.IsCheckAfterMove(new MotionFigure("Ke8d8")))
+                                            if(!board.IsCheckShah())
+                                            if(!board.IsCheckAfterMove(new MotionFigure("Ke8d8")))
                                             return true;
             }
             return false;
@@ -126,8 +128,8 @@ namespace ChessLibrary
                             if (board.GetFigureOnSquare(new Square("h1")) == Figure.whiteRook)
                                 if (board.GetFigureOnSquare(new Square("f1")) == Figure.none)
                                     if (board.GetFigureOnSquare(new Square("g1")) == Figure.none)
-                                        if(board.IsCheckShah())
-                                        if(board.IsCheckAfterMove(new MotionFigure("Ke1f1")))
+                                        if(!board.IsCheckShah())
+                                        if(!board.IsCheckAfterMove(new MotionFigure("Ke1f1")))
                                         return true;
                 if (motionFigure.From == new Square("e1"))
                     if (motionFigure.To == new Square("c1"))
@@ -136,8 +138,8 @@ namespace ChessLibrary
                                 if (board.GetFigureOnSquare(new Square("d1")) == Figure.none)
                                     if (board.GetFigureOnSquare(new Square("c1")) == Figure.none)
                                         if (board.GetFigureOnSquare(new Square("b1")) == Figure.none)
-                                            if(board.IsCheckShah())
-                                            if(board.IsCheckAfterMove(new MotionFigure("Ke1d1")))
+                                            if(!board.IsCheckShah())
+                                            if(!board.IsCheckAfterMove(new MotionFigure("Ke1d1")))
                                             return true;
             }
             return false;
@@ -145,13 +147,15 @@ namespace ChessLibrary
 
         private bool CanPawnMove()
         {
-            if (motionFigure.From.X < 1 || motionFigure.From.Y > 6)
+            if (motionFigure.From.X < 1 || motionFigure.From.Y > 7)
                 return false;
             int stepX = motionFigure.Figure.GetColor() == Color.white ? +1 : -1;
-            return CanPawnGoStep(stepX) || 
+            return 
+                CanPawnGoStep(stepX) || 
                 CanPawnJump(stepX) || 
                 CanPawnEat(stepX) ||
                 CanPavwEnp(stepX);
+
         }
 
         private bool CanPavwEnp(int stepX)
